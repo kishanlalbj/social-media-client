@@ -6,7 +6,7 @@ describe('Header', () => {
   it('should render header', () => {
     render(<Header />);
 
-    const text = screen.getByText(/Header/i);
+    const text = screen.getByText(/Social Media/i);
     expect(text).toBeInTheDocument();
   });
 });
