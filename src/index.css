@@ -1,4 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+:root {
+  --primary-color: #1ea7fd;
+}
 
 * {
   margin: 0;
@@ -6,9 +9,47 @@
   box-sizing: border-box;
 }
 
+#app,
+html {
+  height: 100vh;
+}
+
 body {
   font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
+
 .App {
-  color: blue;
+  height: 100%;
+  background-color: rgb(244, 244, 244);
+}
+
+.container {
+  margin: 0 60px;
+  margin-top: 30px;
+  box-sizing: border-box;
+}
+
+input {
+  padding: 10px 10px;
+  width: 100%;
+}
+
+.loader {
+  position: relative;
+  height: 100%;
+}
+
+.loader-icon {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  animation: spin 4s linear infinite;
+  color: var(--primary-color);
+}
+
+@keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }

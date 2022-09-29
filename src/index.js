@@ -1,15 +1,30 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Provider } from 'react-redux';
 import App from './App';
+import store from './redux/store';
+import axios from './utils/axios';
+import verifyJwt from './utils/verifyJwt';
 import './index.css';
+
+axios.interceptors.request.use((request) => {
+  let token = localStorage.getItem('tk');
+  if (verifyJwt(token)) request.headers.authorization = `Bearer ${token}`;
+
+  return request;
+});
 
 const root = ReactDOM.createRoot(document.querySelector('#app'));
 
-// TODO: check if this is possible
-// root.render(() => (
-//   <React.StrictMode>
-//     <App />
-//   </React.StrictMode>
-// ));
-
-root.render(<App />);
+root.render(
+  <React.StrictMode>
+    <Provider store={store}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/*" element={<App />}></Route>
+        </Routes>
+      </BrowserRouter>
+    </Provider>
+  </React.StrictMode>
+);

@@ -1,0 +1,9 @@
+.landing-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.landing-logo > img {
+  width: 50%;
+}

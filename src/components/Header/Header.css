@@ -1,29 +1,39 @@
-.header {
-  padding: 15px 20px;
+.wrapper {
+  font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.header-container {
+  padding: 15px 20px;
   display: flex;
   align-items: center;
-  min-height: 100%;
-
   justify-content: space-between;
-  margin: 0 25px;
+  background-color: #fff;
 }
 
-.brand {
-  font-weight: 700;
-  font-size: 18px;
+svg {
+  display: inline-block;
+  vertical-align: top;
 }
 
-.header-nav-list {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
+h1 {
+  font-weight: 900;
+  font-size: 20px;
+  line-height: 1;
+  margin: 6px 0 6px 10px;
+  display: inline-block;
+  vertical-align: top;
+  color: var(--primary-color);
 }
 
-.header-nav-list > li {
-  list-style-type: none;
-  margin: 0 10px;
+button + button {
+  margin-left: 10px;
+}
+
+.welcome {
+  color: #333;
+  font-size: 14px;
+  margin-right: 10px;
+}
+
+.brand-texy-link {
+  text-decoration: none;
+  color: inherit;
 }

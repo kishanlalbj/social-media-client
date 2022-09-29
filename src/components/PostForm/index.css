@@ -1,0 +1,36 @@
+.post-form-container {
+  display: flex;
+  gap: 2rem;
+}
+
+.post-form-card {
+  border: 1px solid rgba(51, 51, 51, 0.374);
+  border-radius: 10px;
+  padding: 20px;
+  width: 50%;
+  background-color: #fff;
+}
+
+.post-form-actions {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}
+
+.post-textarea {
+  padding: 10px;
+  width: 100%;
+  resize: none;
+  border-radius: 10px;
+  border: none;
+  font-family: inherit;
+}
+
+.post-textarea:focus {
+  outline: none;
+}
+
+.post-form {
+  flex-grow: 1;
+}
