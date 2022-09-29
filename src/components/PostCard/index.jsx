@@ -1,10 +1,20 @@
 import moment from 'moment/moment';
-import React from 'react';
-import { AiFillDelete, AiOutlineComment, AiOutlineLike } from 'react-icons/ai';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useAppSelector } from '../../hooks';
+import { AiFillDelete, AiFillLike, AiOutlineComment, AiOutlineLike } from 'react-icons/ai';
 import './index.css';
+import { getUser } from '../../selectors';
 
 const PostCard = (props) => {
-  const { _id, text, postedBy, createdAt, isOwner, onDelete } = props;
+  const { _id, text, postedBy, createdAt, onDelete, onLike, likes = [] } = props;
+  console.log('compoenent', likes);
+  const { user } = useAppSelector(getUser);
+  const isOwner = postedBy._id === user.user;
+  let liked = false;
+
+  likes.forEach((likedUser) => {
+    if (likedUser._id === user.user) liked = true;
+  });
 
   return (
     <div className="post-card" key={_id}>
@@ -27,7 +37,16 @@ const PostCard = (props) => {
       <div className="post-card-footer">
         <div>
           <span>
-            <AiOutlineLike size={24} className="post-actions" />
+            {liked ? (
+              <AiFillLike
+                color={'#1ea7fd'}
+                size={24}
+                className="post-actions"
+                onClick={() => onLike(_id)}
+              />
+            ) : (
+              <AiOutlineLike size={24} className="post-actions" onClick={() => onLike(_id)} />
+            )}
           </span>
         </div>
         <AiOutlineComment size={24} className="post-actions" />

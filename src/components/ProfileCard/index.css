@@ -1,0 +1,29 @@
+.profile-card {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.profile-avatar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.profile-avatar > img {
+  width: 100px;
+}
+
+.profile-body {
+  margin-top: 20px;
+  padding: 0px 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.profile-body > div > center {
+  margin-top: 10px;
+}

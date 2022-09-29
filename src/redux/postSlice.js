@@ -43,13 +43,28 @@ export const postsSlice = createSlice({
       state.deletePostLoading = true;
     },
     deletePostSuccess: (state, action) => {
-      console.log(action.payload);
       state.deletePostLoading = false;
       state.posts = state.posts.filter((ele) => ele._id !== action.payload);
     },
     deletePostFail: (state, action) => {
       state.deletePostLoading = false;
       state.deleteError = action.payload;
+    },
+    likePostRequested: (state) => {
+      state.likeLoader = true;
+    },
+    likePostSuccess: (state, action) => {
+      console.log('--', action.payload.likes);
+      state.likeLoader = false;
+
+      for (let i = 0; i < state.posts.length; i++) {
+        let post = state.posts[i];
+        if (post._id === action.payload._id) state.posts[i].likes = [...action.payload.likes];
+      }
+    },
+    likePostFailure: (state, action) => {
+      state.likeLoader = false;
+      state.likeError = action.payload;
     }
   }
 });
@@ -64,7 +79,10 @@ export const {
   onPostTextChange,
   deletePostRequested,
   deletePostSuccess,
-  deletePostFail
+  deletePostFail,
+  likePostRequested,
+  likePostSuccess,
+  likePostFailure
 } = postsSlice.actions;
 
 export default postsSlice.reducer;

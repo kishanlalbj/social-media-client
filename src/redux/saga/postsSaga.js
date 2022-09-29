@@ -6,7 +6,9 @@ import {
   newPostSuccess,
   newPostFailure,
   deletePostFail,
-  deletePostSuccess
+  deletePostSuccess,
+  likePostSuccess,
+  likePostFailure
 } from '../postSlice';
 
 function* getPostsSaga() {
@@ -37,10 +39,20 @@ function* deletePostSaga(action) {
   }
 }
 
+function* likePostSaga(action) {
+  try {
+    let res = yield call(() => axios.post(`/posts/like/${action.payload}`));
+
+    yield put(likePostSuccess(res.data));
+  } catch (error) {
+    yield put(likePostFailure('error liking'));
+  }
+}
 function* watchPostsSaga() {
   yield takeLatest('posts/getPostsRequested', getPostsSaga);
   yield takeLatest('posts/newPostRequested', newPostSaga);
   yield takeLatest('posts/deletePostRequested', deletePostSaga);
+  yield takeLatest('posts/likePostRequested', likePostSaga);
 }
 
 export default watchPostsSaga;

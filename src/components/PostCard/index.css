@@ -4,10 +4,9 @@
   gap: 1rem;
   border: 1px solid rgba(51, 51, 51, 0.31);
   border-radius: 10px;
-  width: 50%;
   padding: 20px;
-  width: 50%;
   background-color: #fff;
+  width: 445px;
 }
 
 .post-card-header {
