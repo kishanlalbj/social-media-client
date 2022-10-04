@@ -54,7 +54,6 @@ export const postsSlice = createSlice({
       state.likeLoader = true;
     },
     likePostSuccess: (state, action) => {
-      console.log('--', action.payload.likes);
       state.likeLoader = false;
 
       for (let i = 0; i < state.posts.length; i++) {

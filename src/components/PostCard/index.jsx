@@ -1,5 +1,5 @@
 import moment from 'moment/moment';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useAppSelector } from '../../hooks';
 import { AiFillDelete, AiFillLike, AiOutlineComment, AiOutlineLike } from 'react-icons/ai';
 import './index.css';
@@ -7,7 +7,6 @@ import { getUser } from '../../selectors';
 
 const PostCard = (props) => {
   const { _id, text, postedBy, createdAt, onDelete, onLike, likes = [] } = props;
-  console.log('compoenent', likes);
   const { user } = useAppSelector(getUser);
   const isOwner = postedBy._id === user.user;
   let liked = false;
@@ -25,34 +24,34 @@ const PostCard = (props) => {
 
         <div className="post-title">
           <p className="post-user">{postedBy?.firstName}</p>
-          <p className="post-date"> {moment(createdAt).format('LL')}</p>
+          <p className="post-date"> {moment(createdAt).fromNow()}</p>
         </div>
 
         <div className="post-header-actions"></div>
       </div>
       <div className="post-body">
-        {/* <img src="/images/hero-logo.svg" width="50%" height={'100%'}></img> */}
         <p>{text}</p>
       </div>
       <div className="post-card-footer">
         <div>
           <span>
+            {likes.length !== 0 && <span className="post-like">{likes.length}</span>}{' '}
             {liked ? (
               <AiFillLike
                 color={'#1ea7fd'}
-                size={24}
+                size={18}
                 className="post-actions"
                 onClick={() => onLike(_id)}
               />
             ) : (
-              <AiOutlineLike size={24} className="post-actions" onClick={() => onLike(_id)} />
+              <AiOutlineLike size={18} className="post-actions" onClick={() => onLike(_id)} />
             )}
           </span>
         </div>
-        <AiOutlineComment size={24} className="post-actions" />
+        <AiOutlineComment size={18} className="post-actions" />
         {isOwner && (
           <AiFillDelete
-            size={24}
+            size={18}
             color="red"
             className="post-actions"
             onClick={() => onDelete(_id)}></AiFillDelete>

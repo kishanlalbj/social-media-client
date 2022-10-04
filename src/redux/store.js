@@ -1,15 +1,18 @@
 import { configureStore } from '@reduxjs/toolkit';
 import createSaga from 'redux-saga';
-import postsSlice from './postSlice';
+import postReducer from './postSlice';
+import userReducer from './userSlice';
+import profileReducer from './profileSlice';
+
 import rootSaga from './saga/rootSaga';
-import userSlice from './userSlice';
 
 const saga = createSaga();
 
 const store = configureStore({
   reducer: {
-    user: userSlice,
-    posts: postsSlice
+    user: userReducer,
+    posts: postReducer,
+    profile: profileReducer
   },
   middleware: [saga]
 });

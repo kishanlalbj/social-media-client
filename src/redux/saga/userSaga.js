@@ -1,6 +1,6 @@
 import { call, takeLatest, put, select } from 'redux-saga/effects';
 import axios from '../../utils/axios';
-import { loginFailure, loginSuccess } from '../userSlice';
+import { loginFailure, loginSuccess, registrationFailure, registrationSuccess } from '../userSlice';
 import jwtDecode from 'jwt-decode';
 
 function* workLogin() {
@@ -21,8 +21,22 @@ function* workLogin() {
   }
 }
 
+function* registrationSaga(action) {
+  try {
+    const res = yield call(() => axios.post('/auth/register', { ...action.payload }));
+    if (res.status === 200) {
+      yield put(registrationSuccess());
+    } else {
+      yield put(registrationFailure('some error'));
+    }
+  } catch (error) {
+    yield put(registrationFailure(error.response.data.error.message));
+  }
+}
+
 function* watchUserSaga() {
   yield takeLatest('user/loginRequested', workLogin);
+  yield takeLatest('user/registrationRequested', registrationSaga);
 }
 
 export default watchUserSaga;

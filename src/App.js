@@ -9,11 +9,20 @@ import { setCurrentUser } from './redux/userSlice';
 import axios from './utils/axios';
 import { BiLoaderAlt } from 'react-icons/bi';
 import Layout from './Layout/Layout';
+import Profile from './pages/Profile/Profile';
+import { useNavigate } from 'react-router-dom';
 
 const App = () => {
   const { user } = useSelector((state) => state.user);
   const [loading, setLoding] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user && user.user) {
+      navigate('/profile');
+    }
+  }, [user]);
 
   const currentUser = async () => {
     setLoding(true);
@@ -51,6 +60,13 @@ const App = () => {
             element={
               <ProtectedRoute user={user}>
                 <Posts />
+              </ProtectedRoute>
+            }></Route>
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute user={user}>
+                <Profile />
               </ProtectedRoute>
             }></Route>
         </Route>

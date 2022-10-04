@@ -7,7 +7,9 @@ export const userSlice = createSlice({
     password: 'test',
     user: null,
     loading: false,
-    error: null
+    profile: {},
+    error: null,
+    registrationSuccess: false
   },
   reducers: {
     emailChange: (state, action) => {
@@ -36,6 +38,19 @@ export const userSlice = createSlice({
       state.user = null;
       state.email = '';
       state.password = '';
+    },
+    registrationRequested: (state) => {
+      state.loading = true;
+    },
+    registrationSuccess: (state) => {
+      state.loading = false;
+      state.error = '';
+      state.profile = null;
+      state.registrationSuccess = true;
+    },
+    registrationFailure: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
     }
   }
 });
@@ -47,7 +62,10 @@ export const {
   loginSuccess,
   setCurrentUser,
   loginFailure,
-  logout
+  logout,
+  registrationRequested,
+  registrationSuccess,
+  registrationFailure
 } = userSlice.actions;
 
 export default userSlice.reducer;

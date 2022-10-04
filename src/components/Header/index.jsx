@@ -1,6 +1,5 @@
 import React from 'react';
 import Button from '../Button';
-import PropTypes from 'prop-types';
 import './header.css';
 import { NavLink } from 'react-router-dom';
 
@@ -11,11 +10,16 @@ const Header = (props) => {
     <header>
       <div className="wrapper">
         <div>
-          <h1>Social Media</h1>
+          <h1>
+            <NavLink to="/" className={'brand-text-link'}>
+              Social Media
+            </NavLink>
+          </h1>
         </div>
         <div>
           {user ? (
             <>
+              <NavLink to="/profile">Profile</NavLink>
               <Button size="small" label="Logout" onClick={onLogout}></Button>
             </>
           ) : null}
@@ -23,14 +27,6 @@ const Header = (props) => {
       </div>
     </header>
   );
-};
-
-Header.propTypes = {
-  isAuthenticated: PropTypes.bool
-};
-
-Header.defaultProps = {
-  isAuthenticated: false
 };
 
 export default Header;

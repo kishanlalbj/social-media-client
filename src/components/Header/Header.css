@@ -8,11 +8,6 @@
   background-color: #fff;
 }
 
-svg {
-  display: inline-block;
-  vertical-align: top;
-}
-
 h1 {
   font-weight: 900;
   font-size: 20px;
@@ -33,7 +28,7 @@ button + button {
   margin-right: 10px;
 }
 
-.brand-texy-link {
+.brand-text-link {
   text-decoration: none;
   color: inherit;
 }
