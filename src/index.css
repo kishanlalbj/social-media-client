@@ -20,7 +20,7 @@ body {
 
 .App {
   height: 100%;
-  background-color: rgb(244, 244, 244);
+  background-color: rgb(61, 61, 61);
 }
 
 .container {
@@ -45,13 +45,18 @@ input {
 .loader-icon {
   position: absolute;
   top: 45%;
-  left: 50%;
+  left: 45%;
   animation: spin 4s linear infinite;
   color: var(--primary-color);
 }
 .error-text {
   color: red;
   font-size: 12px;
+}
+
+.icon-button {
+  cursor: pointer;
+  color: var(--primary-color);
 }
 
 @keyframes spin {

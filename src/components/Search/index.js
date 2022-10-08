@@ -1,8 +1,16 @@
 import React, { useState } from 'react';
+import Select from 'react-select';
 import './index.css';
 
 const SearchInput = () => {
   const [search, setSearch] = useState('');
+
+  const [options, setOptions] = useState([
+    { value: 'Kishan', label: 'Kishan' },
+    { value: 'Radhe', label: 'Radhe' }
+  ]);
+
+  const [selectedOption, setSelectedOption] = useState(null);
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
@@ -15,13 +23,14 @@ const SearchInput = () => {
 
   return (
     <form onSubmit={onSubmitHandler}>
-      <input
+      <Select defaultValue={selectedOption} options={options}></Select>
+      {/* <input
         type="text"
         placeholder="Search people"
         value={search}
         onChange={onChangehandler}
         className="input"></input>
-      <input type="submit" value="search" style={{ display: 'none' }} />
+      <input type="submit" value="search" style={{ display: 'none' }} /> */}
     </form>
   );
 };

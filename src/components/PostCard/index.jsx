@@ -1,19 +1,55 @@
 import moment from 'moment/moment';
-import React, { useEffect } from 'react';
-import { useAppSelector } from '../../hooks';
-import { AiFillDelete, AiFillLike, AiOutlineComment, AiOutlineLike } from 'react-icons/ai';
+import React, { useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import {
+  AiFillDelete,
+  AiFillLike,
+  AiOutlineComment,
+  AiOutlineLike,
+  AiOutlineSend
+} from 'react-icons/ai';
 import './index.css';
 import { getUser } from '../../selectors';
+import { commentPostRequested, likePostRequested } from '../../redux/postSlice';
 
 const PostCard = (props) => {
-  const { _id, text, postedBy, createdAt, onDelete, onLike, likes = [] } = props;
+  const dispatch = useAppDispatch();
   const { user } = useAppSelector(getUser);
-  const isOwner = postedBy._id === user.user;
-  let liked = false;
 
-  likes.forEach((likedUser) => {
-    if (likedUser._id === user.user) liked = true;
-  });
+  const [isOwner, setIsOwner] = useState(false);
+  const [liked, setLiked] = useState(false);
+  const [isCommentOpen, setIsCommentOpen] = useState(false);
+  const [commentText, setCommentText] = useState('');
+
+  const { _id, text, postedBy, createdAt, likes = [], comment } = props;
+
+  useEffect(() => {
+    if (postedBy._id === user.user) {
+      setIsOwner(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    likes.forEach((likedUser) => {
+      if (likedUser === user.user) setLiked(true);
+      else setLiked(false);
+    });
+  }, [likes]);
+
+  const handleLikePost = () => {
+    dispatch(likePostRequested(_id));
+  };
+
+  const handleDeletePost = () => {};
+
+  const handleToggleComment = () => {
+    setIsCommentOpen((prev) => !prev);
+  };
+
+  const handleComment = () => {
+    if (!commentText) return;
+    dispatch(commentPostRequested({ id: _id, text: commentText }));
+  };
 
   return (
     <div className="post-card" key={_id}>
@@ -41,22 +77,54 @@ const PostCard = (props) => {
                 color={'#1ea7fd'}
                 size={18}
                 className="post-actions"
-                onClick={() => onLike(_id)}
+                onClick={handleLikePost}
               />
             ) : (
-              <AiOutlineLike size={18} className="post-actions" onClick={() => onLike(_id)} />
+              <AiOutlineLike size={18} className="post-actions" onClick={handleLikePost} />
             )}
           </span>
         </div>
-        <AiOutlineComment size={18} className="post-actions" />
+        <span>
+          {comment.length > 0 ? comment.length : null}
+          <AiOutlineComment size={18} className="post-actions" onClick={handleToggleComment} />
+        </span>
         {isOwner && (
           <AiFillDelete
             size={18}
             color="red"
             className="post-actions"
-            onClick={() => onDelete(_id)}></AiFillDelete>
+            onClick={handleDeletePost}></AiFillDelete>
         )}
       </div>
+      {isCommentOpen && (
+        <div className="comment-section-container">
+          {comment.length === 0 && <p className="comment-text">No comments.. Simply waste</p>}
+
+          {comment.map((com) => (
+            <div key={com._id} className="comment-section">
+              <img
+                src="/images/default_avatar.svg"
+                className="comment-avatar"
+                alt={com.user.firstName}
+                title={com.user.firstName}></img>
+              <strong className="comment-text">
+                {com.user.firstName} {com.user.lastName}
+              </strong>
+              <p className="comment-text">{com.text}</p>
+            </div>
+          ))}
+
+          <div className="comment-form">
+            <input
+              type="text"
+              placeholder="Comment"
+              className="comment-input"
+              value={commentText}
+              onChange={(e) => setCommentText(e.target.value)}></input>
+            <AiOutlineSend size={24} className="icon-button" onClick={handleComment} />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

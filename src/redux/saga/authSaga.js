@@ -1,10 +1,11 @@
 import { call, takeLatest, put, select } from 'redux-saga/effects';
 import axios from '../../utils/axios';
-import { loginFailure, loginSuccess, registrationFailure, registrationSuccess } from '../userSlice';
+import { loginFailure, loginSuccess, registrationFailure, registrationSuccess } from '../authSlice';
 import jwtDecode from 'jwt-decode';
 
 function* workLogin() {
-  const { email, password } = yield select((state) => state.user);
+  const { email, password } = yield select((state) => state.auth);
+
   try {
     const res = yield call(() => axios.post('/auth/login', { email, password }));
 

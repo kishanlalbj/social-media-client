@@ -19,7 +19,7 @@ const Header = (props) => {
         <div>
           {user ? (
             <>
-              <NavLink to="/profile">Profile</NavLink>
+              <NavLink to={`/profile/${user.user}`}>Profile</NavLink>
               <Button size="small" label="Logout" onClick={onLogout}></Button>
             </>
           ) : null}

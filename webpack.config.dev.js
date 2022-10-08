@@ -5,14 +5,15 @@ module.exports = {
   mode: 'development',
   resolve: { extensions: ['*', '.js', '.jsx'] },
   output: {
-    filename: 'bundle-[hash].js'
+    filename: 'bundle-[hash].js',
+    publicPath: '/'
   },
   devtool: 'source-map',
   devServer: {
     port: 3000,
     open: true,
     hot: true,
-    historyApiFallback: { index: '/', disableDotRule: true }
+    historyApiFallback: true
   },
   module: {
     rules: [

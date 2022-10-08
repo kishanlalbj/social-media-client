@@ -1,10 +1,10 @@
 import { all } from 'redux-saga/effects';
-import watchPostsSaga from './postsSaga';
-import watchUserSaga from './userSaga';
+import watchUserSaga from './authSaga';
+import watchPostSaga from './postSaga';
 import watchProfileSaga from './profileSaga';
 
 function* rootSaga() {
-  yield all([watchUserSaga(), watchPostsSaga(), watchProfileSaga()]);
+  yield all([watchUserSaga(), watchPostSaga(), watchProfileSaga()]);
 }
 
 export default rootSaga;

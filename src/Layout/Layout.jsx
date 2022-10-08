@@ -2,10 +2,10 @@ import React from 'react';
 import { Outlet } from 'react-router-dom';
 import Header from '../components/Header';
 import { useAppSelector, useAppDispatch } from '../hooks';
-import { logout } from '../redux/userSlice';
+import { logout } from '../redux/authSlice';
 
 const Layout = () => {
-  const { user } = useAppSelector((state) => state.user);
+  const { user } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
   const handleLogout = () => {

@@ -27,9 +27,9 @@ const LoginForm = (props) => {
           onChange={onPasswordChange}
           required></input>
         {loading ? (
-          <Button primary={true} label="Loading..." disabled></Button>
+          <Button primary={'true'} label="Loading..." disabled></Button>
         ) : (
-          <Button primary={true} type="submit" label="Login"></Button>
+          <Button primary={'true'} type="submit" label="Login"></Button>
         )}
         {error && <p className="login-error">{error}</p>}
       </form>

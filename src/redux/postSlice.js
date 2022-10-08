@@ -1,87 +1,76 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-export const postsSlice = createSlice({
+export const postSlice = createSlice({
   name: 'posts',
   initialState: {
-    posts: [],
     loading: false,
     error: null,
-    newPostText: '',
-    newPostLoading: false,
-    newPostError: '',
-    deletePostLoading: false,
-    deleteError: ''
+    posts: []
   },
   reducers: {
-    getPostsRequested: (state) => {
+    postsRequested: (state) => {
       state.loading = true;
     },
-    getPostsSuccess: (state, action) => {
+    postsSuccess: (state, action) => {
       state.loading = false;
-      state.posts = [...action.payload].reverse();
+      state.posts = [...action.payload];
+      state.error = null;
     },
-    getPostsFailure: (state, action) => {
-      state.loading = false;
-      state.error = action.payload;
-    },
-    newPostRequested: (state) => {
-      state.newPostLoading = true;
-    },
-    newPostSuccess: (state, action) => {
-      state.newPostLoading = false;
-      state.newPostText = '';
-      state.posts.unshift({ ...action.payload });
-    },
-    newPostFailure: (state, action) => {
+    postsFailure: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },
-    onPostTextChange: (state, action) => {
-      state.newPostText = action.payload;
-    },
-    deletePostRequested: (state) => {
-      state.deletePostLoading = true;
-    },
-    deletePostSuccess: (state, action) => {
-      state.deletePostLoading = false;
-      state.posts = state.posts.filter((ele) => ele._id !== action.payload);
-    },
-    deletePostFail: (state, action) => {
-      state.deletePostLoading = false;
-      state.deleteError = action.payload;
-    },
-    likePostRequested: (state) => {
-      state.likeLoader = true;
+    likePostRequested: () => {
+      // state.loading = true;
     },
     likePostSuccess: (state, action) => {
-      state.likeLoader = false;
-
+      state.loading = false;
       for (let i = 0; i < state.posts.length; i++) {
-        let post = state.posts[i];
-        if (post._id === action.payload._id) state.posts[i].likes = [...action.payload.likes];
+        if (state.posts[i]._id === action.payload._id) {
+          state.posts[i].likes = [...action.payload.likes];
+        }
       }
     },
     likePostFailure: (state, action) => {
-      state.likeLoader = false;
-      state.likeError = action.payload;
+      state.loading = false;
+      state.error = action.payload;
+    },
+    addPost: (state, action) => {
+      state.posts.unshift({ ...action.payload });
+    },
+    userPostsRequested: (state) => {
+      state.loading = true;
+    },
+    commentPostRequested: (state) => {
+      state.loading = true;
+    },
+    commentPostSuccess: (state, action) => {
+      state.loading = false;
+      for (let i = 0; i < state.posts.length; i++) {
+        if (state.posts[i]._id === action.payload._id) {
+          state.posts[i].comment = [...action.payload.comment];
+        }
+      }
+    },
+    commmenrPostFailure: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
     }
   }
 });
 
 export const {
-  getPostsRequested,
-  getPostsSuccess,
-  getPostsFailure,
-  newPostRequested,
-  newPostSuccess,
-  newPostFailure,
-  onPostTextChange,
-  deletePostRequested,
-  deletePostSuccess,
-  deletePostFail,
+  postsRequested,
+  postsSuccess,
+  postsFailure,
   likePostRequested,
   likePostSuccess,
-  likePostFailure
-} = postsSlice.actions;
+  likePostFailure,
+  addPost,
+  userPostsRequested,
+  commentPostRequested,
+  commentPostSuccess,
+  commmenrPostFailure
+} = postSlice.actions;
 
-export default postsSlice.reducer;
+export default postSlice.reducer;

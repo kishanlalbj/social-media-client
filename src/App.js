@@ -1,28 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { BiLoaderAlt } from 'react-icons/bi';
+
 import Login from './pages/Login/Login';
-import Posts from './pages/Posts/Posts';
+import Landing from './pages/Landing/Landing';
 import Register from './pages/Register/Register';
 import ProtectedRoute from './protectedRoute';
-import { setCurrentUser } from './redux/userSlice';
+import { setCurrentUser } from './redux/authSlice';
 import axios from './utils/axios';
-import { BiLoaderAlt } from 'react-icons/bi';
 import Layout from './Layout/Layout';
+import NotFound from './pages/NotFound/NotFound';
 import Profile from './pages/Profile/Profile';
-import { useNavigate } from 'react-router-dom';
 
 const App = () => {
-  const { user } = useSelector((state) => state.user);
   const [loading, setLoding] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (user && user.user) {
-      navigate('/profile');
-    }
-  }, [user]);
+  const location = useLocation();
 
   const currentUser = async () => {
     setLoding(true);
@@ -30,6 +25,7 @@ const App = () => {
       let res = await axios.get('/auth/me');
       setLoding(false);
       dispatch(setCurrentUser(res.data));
+      navigate(location.pathname);
     } catch (error) {
       setLoding(false);
       setCurrentUser({});
@@ -58,17 +54,20 @@ const App = () => {
           <Route
             path="/posts"
             element={
-              <ProtectedRoute user={user}>
-                <Posts />
+              <ProtectedRoute>
+                <Landing />
               </ProtectedRoute>
             }></Route>
+
           <Route
-            path="/profile"
+            path="/profile/:id"
             element={
-              <ProtectedRoute user={user}>
+              <ProtectedRoute>
                 <Profile />
               </ProtectedRoute>
             }></Route>
+
+          <Route path="*" element={<NotFound />}></Route>
         </Route>
       </Routes>
     </div>

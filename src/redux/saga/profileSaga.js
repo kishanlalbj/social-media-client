@@ -1,34 +1,19 @@
-import { takeLatest, call, put, select } from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
 import axios from '../../utils/axios';
-import {
-  getProfileSuccess,
-  getProfileFailure,
-  getPostsByUserSuccess,
-  getPostsByUserFailure
-} from '../profileSlice';
+import { getProfileFailure, getProfileSuccess } from '../profileSlice';
 
-function* getMyProfileSaga(action) {
+function* getProfileSaga(action) {
   try {
-    const res = yield call(() => axios.get(`/profile/${action.payload ? action.payload : 'me'}`));
+    const res = yield call(() => axios.get(`/profile/${action.payload}`));
+
     yield put(getProfileSuccess(res.data));
   } catch (error) {
-    yield put(getProfileFailure('Error geting profile'));
-  }
-}
-
-function* getPostsByUserSaga(action) {
-  try {
-    const id = yield select((state) => state.user.user.user);
-    const res = yield call(() => axios.get(`/posts/user/${action.payload ? action.payload : id}`));
-    yield put(getPostsByUserSuccess(res.data));
-  } catch (error) {
-    yield put(getPostsByUserFailure('Error geting posts'));
+    yield put(getProfileFailure(error.response.data.error.message));
   }
 }
 
 function* watchProfileSaga() {
-  yield takeLatest('profile/getProfileRequested', getMyProfileSaga);
-  yield takeLatest('profile/getPostsByUserRequested', getPostsByUserSaga);
+  yield takeLatest('profile/getProfileRequested', getProfileSaga);
 }
 
 export default watchProfileSaga;

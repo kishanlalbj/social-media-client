@@ -8,16 +8,14 @@ import {
   loginRequested,
   passwordChange,
   registrationRequested
-} from '../../redux/userSlice';
+} from '../../redux/authSlice';
 import './Login.css';
 
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const { email, password, loading, error, user, registrationSuccess } = useSelector(
-    (state) => state.user
-  );
+  const { email, password, loading, error, user } = useSelector((state) => state.auth);
 
   const [showRegistration, setShowRegistration] = useState(false);
 
