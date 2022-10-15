@@ -28,6 +28,12 @@ export const profileSlice = createSlice({
     getProfileFailure: (state, action) => {
       state.loading = false;
       state.error = action.payload;
+    },
+    followUserRequested: (state) => {
+      state.loading = true;
+    },
+    followUserSuccess: (state, action) => {
+      state.loading = false;
     }
   }
 });

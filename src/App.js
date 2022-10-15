@@ -1,17 +1,14 @@
+import { Grid } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
-import { BiLoaderAlt } from 'react-icons/bi';
-
-import Login from './pages/Login/Login';
-import Landing from './pages/Landing/Landing';
-import Register from './pages/Register/Register';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import Layout from './Layout/Layout';
+import Auth from './pages/Auth';
+import Landing from './pages/Landing';
 import ProtectedRoute from './protectedRoute';
 import { setCurrentUser } from './redux/authSlice';
 import axios from './utils/axios';
-import Layout from './Layout/Layout';
-import NotFound from './pages/NotFound/NotFound';
-import Profile from './pages/Profile/Profile';
+import socket from './utils/socket';
 
 const App = () => {
   const [loading, setLoding] = useState(false);
@@ -23,54 +20,44 @@ const App = () => {
     setLoding(true);
     try {
       let res = await axios.get('/auth/me');
-      setLoding(false);
       dispatch(setCurrentUser(res.data));
+      socket.emit('joinUser', { message: `${res.data.id}` });
       navigate(location.pathname);
     } catch (error) {
+      dispatch(setCurrentUser({}));
+    } finally {
       setLoding(false);
-      setCurrentUser({});
     }
   };
 
   useEffect(() => {
-    currentUser();
+    if (localStorage.getItem('tk')) currentUser();
   }, []);
 
-  if (loading) {
+  if (loading)
     return (
-      <div className="loader">
-        <BiLoaderAlt size={54} className="loader-icon" />
-      </div>
+      <Grid container alignItems={'center'} justifyContent="center">
+        Loading..
+      </Grid>
     );
-  }
 
   return (
-    <div className="App">
+    <>
       <Routes>
-        <Route path="/" element={<Layout></Layout>}>
-          <Route path="/" element={<Navigate to="/login"></Navigate>}></Route>
-          <Route path="/login" element={<Login />}></Route>
-          <Route path="/register" element={<Register />}></Route>
+        <Route path="/">
+          <Route index element={<Auth />}></Route>
+        </Route>
+        <Route path="posts" element={<Layout />}>
           <Route
-            path="/posts"
+            index
             element={
               <ProtectedRoute>
-                <Landing />
+                <Landing></Landing>
               </ProtectedRoute>
             }></Route>
-
-          <Route
-            path="/profile/:id"
-            element={
-              <ProtectedRoute>
-                <Profile />
-              </ProtectedRoute>
-            }></Route>
-
-          <Route path="*" element={<NotFound />}></Route>
         </Route>
       </Routes>
-    </div>
+    </>
   );
 };
 

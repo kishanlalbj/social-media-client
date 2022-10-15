@@ -6,6 +6,8 @@ import App from './App';
 import store from './redux/store';
 import axios from './utils/axios';
 import verifyJwt from './utils/verifyJwt';
+import { CssBaseline } from '@mui/material';
+import Socket from './socket';
 import './index.css';
 
 axios.interceptors.request.use((request) => {
@@ -21,6 +23,8 @@ root.render(
   // <React.StrictMode>
   <Provider store={store}>
     <BrowserRouter>
+      <CssBaseline />
+      <Socket />
       <App />
     </BrowserRouter>
   </Provider>

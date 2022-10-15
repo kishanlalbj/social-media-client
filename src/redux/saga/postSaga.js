@@ -1,5 +1,6 @@
-import { call, takeLatest, put } from 'redux-saga/effects';
+import { call, takeLatest, put, select } from 'redux-saga/effects';
 import axios from '../../utils/axios';
+import { createNotificationRequested } from '../notifySlice';
 import {
   postsSuccess,
   postsFailure,
@@ -20,9 +21,18 @@ function* getPostSaga() {
 
 function* likePostSaga(action) {
   try {
+    const { user } = yield select((state) => state.auth);
     const postId = action.payload;
     const res = yield call(() => axios.post(`/posts/like/${postId}`));
     yield put(likePostSuccess(res.data));
+    if (user.id !== res.data.postedBy) {
+      const notification = {
+        senderId: user.id,
+        receiverId: res.data.postedBy,
+        text: 'Liked your post'
+      };
+      yield put(createNotificationRequested(notification));
+    }
   } catch (error) {
     yield put(likePostFailure(error.response.data.error.message));
   }

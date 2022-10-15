@@ -3,13 +3,11 @@ import { createSlice } from '@reduxjs/toolkit';
 export const authSlice = createSlice({
   name: 'user',
   initialState: {
-    email: 'john_doe@gmail.com',
-    password: 'test',
     user: null,
+    isAuthenticated: false,
     loading: false,
     error: null,
-    isAuthenticated: false,
-    registrationSuccess: false
+    signUpSuccess: false
   },
   reducers: {
     emailChange: (state, action) => {
@@ -18,17 +16,17 @@ export const authSlice = createSlice({
     passwordChange: (state, action) => {
       state.password = action.payload;
     },
-    loginRequested: (state) => {
+    signInRequested: (state) => {
       state.loading = true;
     },
-    loginSuccess: (state, action) => {
+    signInSuccess: (state, action) => {
       state.loading = false;
       state.user = action.payload;
       state.email = '';
       state.password = '';
       state.isAuthenticated = true;
     },
-    loginFailure: (state, action) => {
+    signInFailure: (state, action) => {
       state.error = action.payload;
       state.loading = false;
     },
@@ -43,16 +41,16 @@ export const authSlice = createSlice({
       state.password = '';
       state.isAuthenticated = false;
     },
-    registrationRequested: (state) => {
+    signUpRequested: (state) => {
       state.loading = true;
     },
-    registrationSuccess: (state) => {
+    signUpSuccess: (state) => {
       state.loading = false;
       state.error = '';
       state.profile = null;
-      state.registrationSuccess = true;
+      state.signUpSuccess = true;
     },
-    registrationFailure: (state, action) => {
+    signUpFailure: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     }
@@ -62,14 +60,14 @@ export const authSlice = createSlice({
 export const {
   emailChange,
   passwordChange,
-  loginRequested,
-  loginSuccess,
+  signInRequested,
+  signInSuccess,
   setCurrentUser,
-  loginFailure,
+  signInFailure,
   logout,
-  registrationRequested,
-  registrationSuccess,
-  registrationFailure
+  signUpRequested,
+  signUpSuccess,
+  signUpFailure
 } = authSlice.actions;
 
 export default authSlice.reducer;
