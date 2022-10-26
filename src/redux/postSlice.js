@@ -1,12 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const INITIAL_STATE = {
+  loading: false,
+  error: null,
+  posts: []
+};
+
 export const postSlice = createSlice({
   name: 'posts',
-  initialState: {
-    loading: false,
-    error: null,
-    posts: []
-  },
+  initialState: INITIAL_STATE,
   reducers: {
     postsRequested: (state) => {
       state.loading = true;
@@ -41,6 +43,15 @@ export const postSlice = createSlice({
     userPostsRequested: (state) => {
       state.loading = true;
     },
+    userPostsSuccess: (state, action) => {
+      state.loading = false;
+      state.posts = [...action.payload];
+      state.error = null;
+    },
+    userPostsFailure: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
     commentPostRequested: (state) => {
       state.loading = true;
     },
@@ -55,7 +66,8 @@ export const postSlice = createSlice({
     commmenrPostFailure: (state, action) => {
       state.loading = false;
       state.error = action.payload;
-    }
+    },
+    resetPosts: () => INITIAL_STATE
   }
 });
 
@@ -68,9 +80,12 @@ export const {
   likePostFailure,
   addPost,
   userPostsRequested,
+  userPostsSuccess,
+  userPostsFailure,
   commentPostRequested,
   commentPostSuccess,
-  commmenrPostFailure
+  commmenrPostFailure,
+  resetPosts
 } = postSlice.actions;
 
 export default postSlice.reducer;

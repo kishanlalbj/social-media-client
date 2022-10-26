@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import LoginForm from '../components/LoginForm/LoginForm';
 import RegistrationForm from '../components/RegistrationForm/RegistrationForm';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { signInRequested } from '../redux/authSlice';
+import { signInRequested, signUpRequested } from '../redux/authSlice';
 import { getAuth } from '../selectors';
 
 const Auth = () => {
@@ -40,6 +40,11 @@ const Auth = () => {
     e.preventDefault();
     if (!signInForm.email || !signInForm.password) return;
     dispatch(signInRequested({ ...signInForm }));
+  };
+
+  const handleSignIn = (e) => {
+    e.preventDefault();
+    dispatch(signUpRequested(signUpForm));
   };
 
   useEffect(() => {
@@ -103,6 +108,7 @@ const Auth = () => {
                 password={signUpForm.password}
                 confirmPassword={signUpForm.confirmPassword}
                 onChange={handleSignUpFormChange}
+                onSignUp={handleSignIn}
               />
 
               <Grid container>

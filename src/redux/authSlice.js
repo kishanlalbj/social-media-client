@@ -1,14 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const INITIAL_STATE = {
+  user: null,
+  isAuthenticated: false,
+  loading: false,
+  error: null,
+  signUpSuccess: false
+};
+
 export const authSlice = createSlice({
   name: 'user',
-  initialState: {
-    user: null,
-    isAuthenticated: false,
-    loading: false,
-    error: null,
-    signUpSuccess: false
-  },
+  initialState: INITIAL_STATE,
   reducers: {
     emailChange: (state, action) => {
       state.email = action.payload;
@@ -35,12 +37,7 @@ export const authSlice = createSlice({
       state.user = { ...action.payload };
       state.isAuthenticated = true;
     },
-    logout: (state) => {
-      state.user = null;
-      state.email = '';
-      state.password = '';
-      state.isAuthenticated = false;
-    },
+    logout: () => INITIAL_STATE,
     signUpRequested: (state) => {
       state.loading = true;
     },
@@ -51,6 +48,17 @@ export const authSlice = createSlice({
       state.signUpSuccess = true;
     },
     signUpFailure: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    registrationRequested: (state) => {
+      state.loading = true;
+    },
+    registrationSuccess: (state, action) => {
+      state.loading = false;
+      state.error = null;
+    },
+    registrationFailure: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     }
@@ -67,7 +75,10 @@ export const {
   logout,
   signUpRequested,
   signUpSuccess,
-  signUpFailure
+  signUpFailure,
+  registrationRequested,
+  registrationSuccess,
+  registrationFailure
 } = authSlice.actions;
 
 export default authSlice.reducer;

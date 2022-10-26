@@ -1,12 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const INITIAL_STATE = {
+  loading: false,
+  notifications: [],
+  error: null
+};
+
 export const notifySlice = createSlice({
   name: 'notify',
-  initialState: {
-    loading: false,
-    notifications: [],
-    error: null
-  },
+  initialState: INITIAL_STATE,
   reducers: {
     getNotificationsRequested: (state) => {
       state.loading = true;
@@ -31,7 +33,8 @@ export const notifySlice = createSlice({
     },
     addNotification: (state, action) => {
       state.notifications.unshift({ ...action.payload });
-    }
+    },
+    resetNotifications: () => INITIAL_STATE
   }
 });
 
@@ -42,6 +45,7 @@ export const {
   createNotificationRequested,
   createNotificationSuccess,
   createNotificationFailed,
+  resetNotifications,
   addNotification
 } = notifySlice.actions;
 

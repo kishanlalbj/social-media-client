@@ -1,16 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const INITIAL_STATE = {
+  loading: false,
+  error: null,
+  id: null,
+  firstName: '',
+  lastName: '',
+  followers: [],
+  following: []
+};
+
 export const profileSlice = createSlice({
   name: 'profile',
-  initialState: {
-    loading: false,
-    error: null,
-    id: null,
-    firstName: '',
-    lastName: '',
-    followers: [],
-    following: []
-  },
+  initialState: INITIAL_STATE,
   reducers: {
     getProfileRequested: (state) => {
       state.loading = true;
@@ -34,10 +36,23 @@ export const profileSlice = createSlice({
     },
     followUserSuccess: (state, action) => {
       state.loading = false;
-    }
+      state.following = [...state.following, { ...action.payload }];
+    },
+    followUserFailure: (state, action) => {
+      state.loading = false;
+    },
+    resetProfile: () => INITIAL_STATE
   }
 });
 
-export const { getProfileRequested, getProfileSuccess, getProfileFailure } = profileSlice.actions;
+export const {
+  getProfileRequested,
+  getProfileSuccess,
+  getProfileFailure,
+  followUserRequested,
+  followUserSuccess,
+  followUserFailure,
+  resetProfile
+} = profileSlice.actions;
 
 export default profileSlice.reducer;

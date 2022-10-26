@@ -1,4 +1,4 @@
-import { call, takeLatest, put, select } from 'redux-saga/effects';
+import { call, takeLatest, put } from 'redux-saga/effects';
 import axios from '../../utils/axios';
 import { signInFailure, signInSuccess, signUpFailure, signUpSuccess } from '../authSlice';
 import jwtDecode from 'jwt-decode';

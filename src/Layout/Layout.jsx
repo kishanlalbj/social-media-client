@@ -4,7 +4,9 @@ import { Outlet } from 'react-router-dom';
 import Navbar from '../components/Navbar/Navbar';
 import { useAppSelector, useAppDispatch } from '../hooks';
 import { logout } from '../redux/authSlice';
-import { getNotificationsRequested } from '../redux/notifySlice';
+import { getNotificationsRequested, resetNotifications } from '../redux/notifySlice';
+import { resetPosts } from '../redux/postSlice';
+import { resetProfile } from '../redux/profileSlice';
 import { getNotifications } from '../selectors';
 
 const Layout = () => {
@@ -21,6 +23,9 @@ const Layout = () => {
   const handleLogout = () => {
     localStorage.removeItem('tk');
     dispatch(logout());
+    dispatch(resetPosts());
+    dispatch(resetNotifications());
+    dispatch(resetProfile());
   };
 
   return (

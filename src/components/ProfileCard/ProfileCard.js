@@ -28,12 +28,12 @@ const ProfileCard = (props) => {
               }}>
               <div>
                 <Typography variant="subtitle2">Following</Typography>
-                <Typography variant="h6">{following.length}</Typography>
+                <Typography variant="h6">{following ? following.length : null}</Typography>
               </div>
 
               <div>
                 <Typography variant="subtitle2">Followers</Typography>
-                <Typography variant="h6">{followers.length}</Typography>
+                <Typography variant="h6">{followers ? followers.length : null}</Typography>
               </div>
             </Box>
           </center>

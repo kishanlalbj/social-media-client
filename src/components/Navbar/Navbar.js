@@ -56,7 +56,7 @@ const Navbar = (props) => {
     <AppBar position="sticky">
       <Toolbar>
         <Typography variant="h5" sx={{ flexGrow: 1 }}>
-          Twinstabook
+          Twinsta
         </Typography>
         {authenticated ? (
           <>

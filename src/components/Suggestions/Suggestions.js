@@ -1,7 +1,6 @@
 import { PersonAdd } from '@mui/icons-material';
 import {
   Avatar,
-  Button,
   Card,
   CardContent,
   IconButton,
@@ -16,7 +15,15 @@ import { Box } from '@mui/system';
 import React from 'react';
 
 const Suggestions = (props) => {
-  const { users } = props;
+  const { users, onFollow, onProfileClick } = props;
+
+  const handleClick = (id) => {
+    onFollow(id);
+  };
+
+  const handleProfileClick = (id) => {
+    onProfileClick(id);
+  };
 
   return (
     <Card>
@@ -31,11 +38,11 @@ const Suggestions = (props) => {
                 disablePadding
                 key={u._id}
                 secondaryAction={
-                  <IconButton>
+                  <IconButton onClick={() => handleClick(u._id)}>
                     <PersonAdd />
                   </IconButton>
                 }>
-                <ListItemButton>
+                <ListItemButton onClick={() => handleProfileClick(u._id)}>
                   <ListItemAvatar>
                     <Avatar src="https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg"></Avatar>
                   </ListItemAvatar>

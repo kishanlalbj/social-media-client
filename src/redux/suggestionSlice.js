@@ -1,12 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const INITIAL_STATE = {
+  loading: false,
+  error: null,
+  users: []
+};
+
 export const suggestionSlice = createSlice({
   name: 'suggestions',
-  initialState: {
-    loading: false,
-    error: null,
-    users: []
-  },
+  initialState: INITIAL_STATE,
   reducers: {
     getSuggestionRequested: (state) => {
       state.loading = true;
@@ -19,11 +21,18 @@ export const suggestionSlice = createSlice({
     getSuggestionFailure: (state, action) => {
       state.loading = false;
       state.error = action.payload;
+    },
+    removeUserSuggesstion: (state, action) => {
+      state.users = state.users.filter((item) => item._id !== action.payload);
     }
   }
 });
 
-export const { getSuggestionRequested, getSuggestionSuccess, getSuggestionFailure } =
-  suggestionSlice.actions;
+export const {
+  getSuggestionRequested,
+  getSuggestionSuccess,
+  getSuggestionFailure,
+  removeUserSuggesstion
+} = suggestionSlice.actions;
 
 export default suggestionSlice.reducer;

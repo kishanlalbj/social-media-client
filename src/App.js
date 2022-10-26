@@ -5,10 +5,12 @@ import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import Layout from './Layout/Layout';
 import Auth from './pages/Auth';
 import Landing from './pages/Landing';
+import Profile from './pages/Profile';
 import ProtectedRoute from './protectedRoute';
 import { setCurrentUser } from './redux/authSlice';
 import axios from './utils/axios';
 import socket from './utils/socket';
+import verifyJwt from './utils/verifyJwt';
 
 const App = () => {
   const [loading, setLoding] = useState(false);
@@ -31,7 +33,8 @@ const App = () => {
   };
 
   useEffect(() => {
-    if (localStorage.getItem('tk')) currentUser();
+    const token = localStorage.getItem('tk');
+    if (token && verifyJwt(token)) currentUser();
   }, []);
 
   if (loading)
@@ -53,6 +56,26 @@ const App = () => {
             element={
               <ProtectedRoute>
                 <Landing></Landing>
+              </ProtectedRoute>
+            }></Route>
+        </Route>
+
+        <Route path="/profile" element={<Layout />}>
+          <Route
+            index
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }></Route>
+        </Route>
+
+        <Route path="/profile/:id" element={<Layout />}>
+          <Route
+            index
+            element={
+              <ProtectedRoute>
+                <Profile />
               </ProtectedRoute>
             }></Route>
         </Route>
