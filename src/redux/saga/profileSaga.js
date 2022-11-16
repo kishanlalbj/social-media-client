@@ -4,7 +4,11 @@ import {
   followUserFailure,
   followUserSuccess,
   getProfileFailure,
-  getProfileSuccess
+  getProfileSuccess,
+  searchProfileFailure,
+  searchProfileSuccess,
+  unfollowFailure,
+  unfollowSuccess
 } from '../profileSlice';
 
 function* getProfileSaga(action) {
@@ -26,9 +30,30 @@ function* followUserSaga(action) {
   }
 }
 
+function* searchProfileSaga(action) {
+  try {
+    const query = action.payload;
+    const res = yield call(() => axios.post(`/profile/search`, { query }));
+    yield put(searchProfileSuccess(res.data));
+  } catch (error) {
+    yield put(searchProfileFailure(error.response.error.message));
+  }
+}
+
+function* unFollowSaga(action) {
+  try {
+    const res = yield call(() => axios.post(`/users/unfollow/${action.payload}`));
+    yield put(unfollowSuccess(res.data._id));
+  } catch (error) {
+    yield put(unfollowFailure(error.response.error.message));
+  }
+}
+
 function* watchProfileSaga() {
   yield takeLatest('profile/getProfileRequested', getProfileSaga);
   yield takeLatest('profile/followUserRequested', followUserSaga);
+  yield takeLatest('profile/searchProfileRequested', searchProfileSaga);
+  yield takeLatest('profile/unfollowRequested', unFollowSaga);
 }
 
 export default watchProfileSaga;

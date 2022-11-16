@@ -1,11 +1,13 @@
-import { Grid } from '@mui/material';
+import { Grid, Icon, Skeleton } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import Layout from './Layout/Layout';
 import Auth from './pages/Auth';
 import Landing from './pages/Landing';
+import Post from './pages/Post';
 import Profile from './pages/Profile';
+import UserProfile from './pages/UserProfile';
 import ProtectedRoute from './protectedRoute';
 import { setCurrentUser } from './redux/authSlice';
 import axios from './utils/axios';
@@ -27,6 +29,7 @@ const App = () => {
       navigate(location.pathname);
     } catch (error) {
       dispatch(setCurrentUser({}));
+      navigate('/');
     } finally {
       setLoding(false);
     }
@@ -39,8 +42,10 @@ const App = () => {
 
   if (loading)
     return (
-      <Grid container alignItems={'center'} justifyContent="center">
-        Loading..
+      <Grid container alignItems={'center'} justifyContent="center" sx={{ height: '100vh' }}>
+        <Icon sx={{ fontSize: '64px' }}>
+          <Skeleton variant="circular" width={60} height={60} animation="wave"></Skeleton>
+        </Icon>
       </Grid>
     );
 
@@ -66,6 +71,26 @@ const App = () => {
             element={
               <ProtectedRoute>
                 <Profile />
+              </ProtectedRoute>
+            }></Route>
+        </Route>
+
+        <Route path="/posts/:id" element={<Layout />}>
+          <Route
+            index
+            element={
+              <ProtectedRoute>
+                <Post />
+              </ProtectedRoute>
+            }></Route>
+        </Route>
+
+        <Route path="/profile/me" element={<Layout />}>
+          <Route
+            index
+            element={
+              <ProtectedRoute>
+                <UserProfile />
               </ProtectedRoute>
             }></Route>
         </Route>

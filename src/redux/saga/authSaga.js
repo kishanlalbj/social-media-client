@@ -1,6 +1,14 @@
 import { call, takeLatest, put } from 'redux-saga/effects';
 import axios from '../../utils/axios';
-import { signInFailure, signInSuccess, signUpFailure, signUpSuccess } from '../authSlice';
+import {
+  logoutFailure,
+  logoutSuccess,
+  refreshTokenFailure,
+  signInFailure,
+  signInSuccess,
+  signUpFailure,
+  signUpSuccess
+} from '../authSlice';
 import jwtDecode from 'jwt-decode';
 
 function* workLogin(action) {
@@ -13,7 +21,7 @@ function* workLogin(action) {
       const { token } = res.data;
       localStorage.setItem('tk', token);
       const user = jwtDecode(token);
-      yield put(signInSuccess(user));
+      yield put(signInSuccess({ user }));
     } else {
       yield put(signInFailure('some error'));
     }
@@ -35,9 +43,34 @@ function* registrationSaga(action) {
   }
 }
 
+function* refreshTokenSaga() {
+  try {
+    const res = yield call(() => axios.post('/auth/refresh-token'));
+    const { token } = res.data;
+    localStorage.setItem('tk', token);
+    const user = jwtDecode(token);
+
+    yield put(signInSuccess(user));
+  } catch (error) {
+    yield put(refreshTokenFailure(error.response.data.error.message));
+  }
+}
+
+function* logoutSaga() {
+  try {
+    yield call(() => axios.delete('/auth/logout'));
+    localStorage.removeItem('tk');
+    yield put(logoutSuccess());
+  } catch (error) {
+    yield put(logoutFailure(error.response.data.message));
+  }
+}
+
 function* watchUserSaga() {
   yield takeLatest('user/signInRequested', workLogin);
   yield takeLatest('user/signUpRequested', registrationSaga);
+  yield takeLatest('user/refreshTokenRequested', refreshTokenSaga);
+  yield takeLatest('user/logoutRequested', logoutSaga);
 }
 
 export default watchUserSaga;

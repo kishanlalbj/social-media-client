@@ -1,6 +1,5 @@
-import { Logout, Mail, Notifications, Person } from '@mui/icons-material';
+import { Logout, Person } from '@mui/icons-material';
 import {
-  Badge,
   AppBar,
   Avatar,
   Button,
@@ -12,24 +11,24 @@ import {
   Toolbar,
   Typography,
   Box,
-  styled,
   ListItem,
   ListItemButton,
   ListItemAvatar
 } from '@mui/material';
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
-const Icons = styled(Box)(({ theme }) => ({
-  display: 'none',
-  alignItems: 'center',
-  gap: '20px',
-  [theme.breakpoints.up('sm')]: {
-    display: 'flex'
-  }
-}));
+// const Icons = styled(Box)(({ theme }) => ({
+//   display: 'none',
+//   alignItems: 'center',
+//   gap: '20px',
+//   [theme.breakpoints.up('sm')]: {
+//     display: 'flex'
+//   }
+// }));
 
 const Navbar = (props) => {
-  const { authenticated, onLogout, notifications } = props;
+  const { authenticated, onLogout, notifications, onProfileClick } = props;
   const [anchorEl, setAnchorEl] = useState(null);
   const [notifyAnchorEl, setNotifyAnchorEl] = useState(null);
 
@@ -48,31 +47,28 @@ const Navbar = (props) => {
     setNotifyAnchorEl(null);
   };
 
-  const handleNotifyClick = (event) => {
-    setNotifyAnchorEl(event.currentTarget);
-  };
+  // const handleNotifyClick = (event) => {
+  //   setNotifyAnchorEl(event.currentTarget);
+  // };
 
   return (
     <AppBar position="sticky">
       <Toolbar>
-        <Typography variant="h5" sx={{ flexGrow: 1 }}>
+        <Typography
+          as={Link}
+          to="/"
+          variant="h5"
+          sx={{ flexGrow: 1, textDecoration: 'none', color: '#fff' }}>
           Twinsta
         </Typography>
         {authenticated ? (
           <>
             <Box sx={{ display: 'flex', gap: '20px' }}>
-              <Icons>
+              {/* <Icons>
                 <Badge badgeContent={2} color="error">
                   <Mail />
                 </Badge>
-                <Badge
-                  badgeContent={notifications.length || 0}
-                  color="error"
-                  onClick={handleNotifyClick}
-                  sx={{ cursor: 'pointer' }}>
-                  <Notifications />
-                </Badge>
-              </Icons>
+              </Icons> */}
               <IconButton size="small" onClick={handleClick}>
                 <Avatar
                   sx={{ width: 32, height: 32 }}
@@ -84,7 +80,7 @@ const Navbar = (props) => {
                 open={open}
                 onClose={handleClose}
                 onClick={handleClose}>
-                <MenuItem>
+                <MenuItem onClick={onProfileClick}>
                   <ListItemIcon>
                     <Person />
                   </ListItemIcon>

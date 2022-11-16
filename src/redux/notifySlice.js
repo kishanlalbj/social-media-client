@@ -34,6 +34,20 @@ export const notifySlice = createSlice({
     addNotification: (state, action) => {
       state.notifications.unshift({ ...action.payload });
     },
+    notifyReadRequested: () => {},
+    notifyReadSuccess: (state, action) => {
+      for (let i = 0; i < state.notifications.length; i++) {
+        if (state.notifications[i]._id === action.payload._id) {
+          state.notifications[i].isRead = true;
+        }
+      }
+    },
+    notifyReadFailure: () => {},
+    clearNotifyRequested: () => {},
+    clearNotifySuccess: (state) => {
+      state.notifications = [];
+    },
+    clearNotifyFailure: () => {},
     resetNotifications: () => INITIAL_STATE
   }
 });
@@ -46,7 +60,13 @@ export const {
   createNotificationSuccess,
   createNotificationFailed,
   resetNotifications,
-  addNotification
+  addNotification,
+  notifyReadRequested,
+  notifyReadSuccess,
+  notifyReadFailure,
+  clearNotifyRequested,
+  clearNotifySuccess,
+  clearNotifyFailure
 } = notifySlice.actions;
 
 export default notifySlice.reducer;

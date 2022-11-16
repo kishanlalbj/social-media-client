@@ -12,7 +12,9 @@
     "lint:fix": "eslint . --fix",
     "prepare": "husky install",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "test:e2e": "cypress run -b chrome --config-file ./cypress.config.js",
+    "test:e2e:open": "cypress open run -b chrome --config-file ./cypress.config.js"
   },
   "dependencies": {
     "@emotion/react": "^11.10.4",
@@ -43,8 +45,10 @@
     "babel-loader": "^8.2.5",
     "commitizen": "^4.2.5",
     "css-loader": "^6.7.1",
+    "cypress": "^11.0.1",
     "eslint": "^8.24.0",
     "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-cypress": "^2.12.1",
     "eslint-plugin-jest": "^27.0.4",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.31.8",

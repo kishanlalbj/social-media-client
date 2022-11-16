@@ -1,5 +1,38 @@
+html {
+  position: relative;
+}
 .profile-pic {
   border-radius: 100px;
   height: 100%;
   width: 150px;
+}
+
+.user-profile-container {
+  display: flex;
+  align-items: start;
+  gap: 10px;
+}
+
+.user-profile-avatar {
+  width: 50%;
+}
+
+.user-profile-error {
+  position: absolute;
+  top: 20%;
+  right: 5%;
+}
+
+@media only screen and (max-width: 600px) {
+  .user-profile-container {
+    flex-direction: column;
+  }
+
+  .user-profile-container > div {
+    width: 100%;
+  }
+
+  .user-profile-avatar {
+    width: 100%;
+  }
 }

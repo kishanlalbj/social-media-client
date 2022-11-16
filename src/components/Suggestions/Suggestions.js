@@ -39,14 +39,16 @@ const Suggestions = (props) => {
                 key={u._id}
                 secondaryAction={
                   <IconButton onClick={() => handleClick(u._id)}>
-                    <PersonAdd />
+                    <PersonAdd color="primary" />
                   </IconButton>
                 }>
                 <ListItemButton onClick={() => handleProfileClick(u._id)}>
                   <ListItemAvatar>
                     <Avatar src="https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg"></Avatar>
                   </ListItemAvatar>
-                  <ListItemText primary={`${u.firstName} ${u.lastName}`}></ListItemText>
+                  <ListItemText
+                    primary={`${u.firstName} ${u.lastName}`}
+                    sx={{ fontSize: '12px' }}></ListItemText>
                 </ListItemButton>
               </ListItem>
             );

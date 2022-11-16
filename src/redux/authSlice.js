@@ -23,7 +23,7 @@ export const authSlice = createSlice({
     },
     signInSuccess: (state, action) => {
       state.loading = false;
-      state.user = action.payload;
+      state.user = action.payload.user;
       state.email = '';
       state.password = '';
       state.isAuthenticated = true;
@@ -35,7 +35,7 @@ export const authSlice = createSlice({
     setCurrentUser: (state, action) => {
       state.loading = false;
       state.user = { ...action.payload };
-      state.isAuthenticated = true;
+      state.isAuthenticated = !!Object.keys(action.payload).length > 0;
     },
     logout: () => INITIAL_STATE,
     signUpRequested: (state) => {
@@ -54,14 +54,34 @@ export const authSlice = createSlice({
     registrationRequested: (state) => {
       state.loading = true;
     },
-    registrationSuccess: (state, action) => {
+    registrationSuccess: (state) => {
       state.loading = false;
       state.error = null;
     },
     registrationFailure: (state, action) => {
       state.loading = false;
       state.error = action.payload;
-    }
+    },
+    refreshTokenRequested: () => {},
+    refreshTokenSuccess: (state, action) => {
+      state.loading = false;
+      state.user = action.payload;
+      state.email = '';
+      state.password = '';
+      state.isAuthenticated = true;
+    },
+    refreshTokenFailure: (state, action) => {
+      state.error = action.payload;
+    },
+    setAccessToken: (state, action) => {
+      state.accessToken = action.payload;
+      state.isAuthenticated = !!action.payload;
+    },
+    logoutRequested: (state) => {
+      state.loading = true;
+    },
+    logoutSuccess: () => INITIAL_STATE,
+    logoutFailure: () => {}
   }
 });
 
@@ -78,7 +98,14 @@ export const {
   signUpFailure,
   registrationRequested,
   registrationSuccess,
-  registrationFailure
+  registrationFailure,
+  refreshTokenRequested,
+  refreshTokenSuccess,
+  refreshTokenFailure,
+  setAccessToken,
+  logoutRequested,
+  logoutSuccess,
+  logoutFailure
 } = authSlice.actions;
 
 export default authSlice.reducer;

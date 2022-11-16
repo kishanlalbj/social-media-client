@@ -4,29 +4,24 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import App from './App';
 import store from './redux/store';
-import axios from './utils/axios';
-import verifyJwt from './utils/verifyJwt';
-import { CssBaseline } from '@mui/material';
+
+import { CssBaseline, ThemeProvider } from '@mui/material';
 import Socket from './socket';
+import theme from './theme';
 import './index.css';
-
-axios.interceptors.request.use((request) => {
-  let token = localStorage.getItem('tk');
-  if (verifyJwt(token)) request.headers.authorization = `Bearer ${token}`;
-
-  return request;
-});
 
 const root = ReactDOM.createRoot(document.querySelector('#app'));
 
 root.render(
   // <React.StrictMode>
   <Provider store={store}>
-    <BrowserRouter>
-      <CssBaseline />
-      <Socket />
-      <App />
-    </BrowserRouter>
+    <ThemeProvider theme={theme}>
+      <BrowserRouter>
+        <CssBaseline />
+        <Socket />
+        <App />
+      </BrowserRouter>
+    </ThemeProvider>
   </Provider>
   // </React.StrictMode>
 );

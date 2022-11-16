@@ -1,6 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const INITIAL_STATE = {
+  profileSearch: {
+    loading: false,
+    error: null,
+    result: []
+  },
   loading: false,
   error: null,
   id: null,
@@ -38,8 +43,31 @@ export const profileSlice = createSlice({
       state.loading = false;
       state.following = [...state.following, { ...action.payload }];
     },
-    followUserFailure: (state, action) => {
+    followUserFailure: (state) => {
       state.loading = false;
+    },
+    searchProfileRequested: (state) => {
+      state.profileSearch.loading = true;
+    },
+    searchProfileSuccess: (state, action) => {
+      state.profileSearch.loading = false;
+      state.profileSearch.result = [...action.payload];
+      state.profileSearch.error = action.payload;
+    },
+    searchProfileFailure: (state, action) => {
+      state.profileSearch.loading = false;
+      state.profileSearch.result = [];
+      state.profileSearch.error = action.payload;
+    },
+    unfollowRequested: (state) => {
+      state.loading = true;
+    },
+    unfollowSuccess: (state, action) => {
+      state.loading = false;
+      state.following = state.following.filter((item) => item._id !== action.payload);
+    },
+    unfollowFailure: (state, action) => {
+      (state.loading = true), (state.error = action.payload);
     },
     resetProfile: () => INITIAL_STATE
   }
@@ -52,6 +80,12 @@ export const {
   followUserRequested,
   followUserSuccess,
   followUserFailure,
+  searchProfileRequested,
+  searchProfileSuccess,
+  searchProfileFailure,
+  unfollowRequested,
+  unfollowSuccess,
+  unfollowFailure,
   resetProfile
 } = profileSlice.actions;
 

@@ -3,7 +3,11 @@ import { createSlice } from '@reduxjs/toolkit';
 const INITIAL_STATE = {
   loading: false,
   error: null,
-  posts: []
+  posts: [],
+  selectedPost: {
+    loading: false,
+    post: null
+  }
 };
 
 export const postSlice = createSlice({
@@ -67,6 +71,25 @@ export const postSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    deletePostRequested: () => {},
+    deletePostSuccess: (state, action) => {
+      state.posts = state.posts.filter((item) => item._id !== action.payload._id);
+    },
+    deletePostFailure: (state, action) => {
+      state.error = action.payload;
+    },
+    getPostByIdRequested: (state) => {
+      state.selectedPost.loading = true;
+    },
+    getPostByIdSuccess: (state, action) => {
+      state.selectedPost.loading = false;
+      state.selectedPost.post = action.payload;
+    },
+    getPostByIdFailure: (state, action) => {
+      state.selectedPost.loading = false;
+      state.selectedPost.post = null;
+      state.selectedPost.error = action.payload;
+    },
     resetPosts: () => INITIAL_STATE
   }
 });
@@ -85,6 +108,12 @@ export const {
   commentPostRequested,
   commentPostSuccess,
   commmenrPostFailure,
+  deletePostRequested,
+  deletePostSuccess,
+  deletePostFailure,
+  getPostByIdRequested,
+  getPostByIdSuccess,
+  getPostByIdFailure,
   resetPosts
 } = postSlice.actions;
 
